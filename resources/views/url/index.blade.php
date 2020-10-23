@@ -10,6 +10,8 @@
 </div>
 @endif
 
+
+
 <div class="container">
 <form action="{{route('url.store')}}" method="post">
 
@@ -20,7 +22,14 @@
         </div>
         
     </form>
+
+    
 </div>
+
+
+
+
+
 
 {{-- <a href="{{route('/url/'.$urls->url_code)}}" target="_blank"> {{$urls->url_code}} </a> --}}
 

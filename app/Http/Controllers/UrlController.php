@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\url;
+use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class UrlController extends Controller
 {
@@ -40,10 +43,21 @@ class UrlController extends Controller
         //$url = url::whereUrl($request->url_old);
 
         $url_code = $this->generateShoutURL();
+
+
+
+        // $stringImaageReFormat = base64_encode('_' . time());
+        // $ext = $request->file('url_qrcode')->getClientOriginalExtension();
+        // $imageName = $stringImaageReFormat . "." . $ext;
+        // $imageEncoded = File::get($request->url_qrcode);
+
         $url = new url();
+        // QrCode::generate('Make me into a QrCode!');
+        // $qrcode = url::generate($url_code, storage_path('app/public/qrcodes/' . $url->url_code . '.png'));
+        //$q = QrCode::size(100)->generate($url->url_code, storage_path('app/public/qrcode/' . $url->url_code . '.png'));
         $url->url_old = $request->url_old;
         $url->url_code = $url_code;
-
+        //$url->url_qrcode = $qrcode;
         // if ($url == null) {
         //     $url_code = $this->generateShoutURL();
         //     url::create([
@@ -54,7 +68,7 @@ class UrlController extends Controller
         // }
         // dd($url);
         $url->save();
-        return view('url.view', compact('url'));
+        return view('url.view', compact('url', $url));
     }
 
     public function shortUrl($url)
