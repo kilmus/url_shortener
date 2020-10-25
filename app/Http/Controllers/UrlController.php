@@ -7,9 +7,16 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Str;
 
 class UrlController extends Controller
 {
+
+    public function main()
+    {
+        $urls = url::all();
+        return view('layouts/main', compact('urls', $urls));
+    }
 
     /**
      * Display a listing of the resource.
@@ -46,27 +53,22 @@ class UrlController extends Controller
 
 
 
-        // $stringImaageReFormat = base64_encode('_' . time());
-        // $ext = $request->file('url_qrcode')->getClientOriginalExtension();
-        // $imageName = $stringImaageReFormat . "." . $ext;
-        // $imageEncoded = File::get($request->url_qrcode);
+        //$stringImaageReFormat = base64_encode('_' . time());
+        //$ext = $request->file('url_qrcode')->getClientOriginalExtension();
+        //$imageName = $stringImaageReFormat . "." . $ext;
+        //$imageEncoded = File::get($request->url_qrcode);
 
         $url = new url();
-        // QrCode::generate('Make me into a QrCode!');
-        // $qrcode = url::generate($url_code, storage_path('app/public/qrcodes/' . $url->url_code . '.png'));
-        //$q = QrCode::size(100)->generate($url->url_code, storage_path('app/public/qrcode/' . $url->url_code . '.png'));
+
+
+
+
+        //$qrcode = QrCode::generate("'.$url->url_old.'", storage_path('app/public/qrcodes/' . $url_code . '.png'));
+
         $url->url_old = $request->url_old;
         $url->url_code = $url_code;
+
         //$url->url_qrcode = $qrcode;
-        // if ($url == null) {
-        //     $url_code = $this->generateShoutURL();
-        //     url::create([
-        //         'url_old' => $request->url_old,
-        //         'url_code' => $url_code
-        //     ]);
-        //     $url = url::whereUrl($request->url_old);
-        // }
-        // dd($url);
         $url->save();
         return view('url.view', compact('url', $url));
     }
@@ -94,6 +96,14 @@ class UrlController extends Controller
 
         //dd($randomString);
         return $randomString;
+    }
+
+
+    public function location($url)
+    {
+        $url2 = url::find($url);
+        //dd($url2);
+        return view('url.location', compact('url2', $url2));
     }
 
     /**

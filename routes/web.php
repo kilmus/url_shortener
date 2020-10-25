@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\UrlController;
 use Illuminate\Support\Facades\Route;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -24,10 +24,15 @@ Route::get('/', function () {
 Route::post('/url/store', [UrlController::class, 'store'])->name('url.store');
 Route::get('/url/view/{url}', [UrlController::class, 'view'])->name('url.view');
 Route::get('/url/{url}', [UrlController::class, 'shortUrl'])->name('url.url');
-Route::get('qr-code-g', function () {
-    QrCode::size(500)
-        ->format('png')
-        ->generate('ItSolutionStuff.com', public_path('images/qrcode.png'));
+Route::get('/url/location/{url}', [UrlController::class, 'location'])->name('url.location');
+Route::get('/layouts/main/{url}', [UrlController::class, 'main'])->name('layouts.main');
 
-    return view('url.index');
-});
+
+
+// Route::get('qr-code-g', function () {
+//     QrCode::size(500)
+//         ->format('png')
+//         ->generate('ItSolutionStuff.com', public_path('images/qrcode.png'));
+
+//     return view('url.index');
+// });
