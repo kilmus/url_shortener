@@ -6,6 +6,7 @@ use App\Models\url;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL as FacadesURL;
@@ -66,8 +67,8 @@ class UrlController extends Controller
         //$qrcode = QrCode::generate("'.$url->url_old.'", storage_path('app/public/qrcodes/' . $url_code . '.png'));
 
         $url->url_old = $request->url_old;
-        $url->url_code = FacadesURL::to('/') . '/' . Str::random(5);
-        //$url->url_code = Str::random(5);
+        //$url->url_code = FacadesURL::to('/') . '/' . Str::random(5);
+        $url->url_code = Str::random(5);
         //$url->url_qrcode = $qrcode;
         $url->save();
         return view('url.view', compact('url', $url));
@@ -75,9 +76,9 @@ class UrlController extends Controller
 
     public function fetchUrl($url)
     {
-        $short_url = FacadesURL::to('/') . '/' . $url;
-        //dd($short_url);
-        $query = DB::table('urls')->where('url_code', '=', $short_url);
+        //$short_url = FacadesURL::to('/') . '/' . $url;
+        //dd($url);
+        $query = DB::table('urls')->where('url_code', '=', $url);
 
         if ($query->exists()) {
             return redirect($query->value('url_old'));
@@ -85,6 +86,17 @@ class UrlController extends Controller
             return 'not exists';
         }
     }
+
+    // public function checkUrl(Request $request, $url)
+    // {
+    //     dd($url);
+    //     $urlCode = url::where('url_code', $url)->firstOrFail();
+    //     if (Hash::check($request->url_code, $urlCode->url_code)) {
+    //         return redirect($urlCode->urlcode);
+    //     } else {
+    //         return 'ไม่ได้ว่ะ';
+    //     }
+    // }
 
     public function shortUrl($url)
     {

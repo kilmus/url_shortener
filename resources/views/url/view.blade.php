@@ -17,7 +17,7 @@
  <div class="container">
     <div class="input-group">
        
-        <input id="urlbox" class="form-control cz-shorten-input" readonly name="url" value="{{$url->url_code}}"  type="text">
+        <input id="urlbox" class="form-control cz-shorten-input" readonly name="url" value="{{url($url->url_code)}}"  type="text">
         <span class="input-group-btn">
             <button class="btn btn-large btn-primary cz-shorten-btn" type="submit" id="copy-button">Copy!</button>
         </span>
@@ -26,7 +26,7 @@
     <a id="urlbox" href="{{route('url.url',$url)}}" target="_blank" name="url"> <span>{{$url->url_code}}</span> </a> 
     
    
-    {{url($url->url_code)}}
+    
     <input id="text" type="hidden" value="{{$url->url_old}}" style="width:80%" /><br />
     
     <div id="qrcode" style="width:100px; height:100px; margin-top:15px;"></div>
