@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\url;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL as FacadesURL;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Str;
 
@@ -49,7 +52,7 @@ class UrlController extends Controller
     {
         //$url = url::whereUrl($request->url_old);
 
-        $url_code = $this->generateShoutURL();
+        //$url_code = $this->generateShoutURL();
 
 
 
@@ -60,17 +63,27 @@ class UrlController extends Controller
 
         $url = new url();
 
-
-
-
         //$qrcode = QrCode::generate("'.$url->url_old.'", storage_path('app/public/qrcodes/' . $url_code . '.png'));
 
         $url->url_old = $request->url_old;
-        $url->url_code = $url_code;
-
+        $url->url_code = FacadesURL::to('/') . '/' . Str::random(5);
+        //$url->url_code = Str::random(5);
         //$url->url_qrcode = $qrcode;
         $url->save();
         return view('url.view', compact('url', $url));
+    }
+
+    public function fetchUrl($url)
+    {
+        $short_url = FacadesURL::to('/') . '/' . $url;
+        //dd($short_url);
+        $query = DB::table('urls')->where('url_code', '=', $short_url);
+
+        if ($query->exists()) {
+            return redirect($query->value('url_old'));
+        } else {
+            return 'not exists';
+        }
     }
 
     public function shortUrl($url)
@@ -103,7 +116,7 @@ class UrlController extends Controller
     {
         $url2 = url::find($url);
         //dd($url2);
-        return view('url.location', compact('url2', $url2));
+        return redirect($url2->url_old);
     }
 
     /**
