@@ -24,15 +24,23 @@ Route::get('/', function () {
 Route::post('/url/store', [UrlController::class, 'store'])->name('url.store');
 Route::get('/url/view/{url}', [UrlController::class, 'view'])->name('url.view');
 Route::get('/url/{url}', [UrlController::class, 'shortUrl'])->name('url.url');
-Route::get('/{url}', [UrlController::class, 'fetchUrl'])->name('url');
+//Route::get('/{url}', [UrlController::class, 'fetchUrl'])->name('url');
 Route::get('/url/location/{url}', [UrlController::class, 'location'])->name('url.location');
 
 
 
-Route::get('/layouts/main/{url}', [UrlController::class, 'main'])->name('layouts.main');
+
+Route::get('/{url}', [UrlController::class, 'countUrl'])->name('count');
 
 
-//Route::post('/{url}', [UrlController::class, 'checkUrl'])->where('url_code', ['a-zA-Z0-9{5}'])->name('checkUrl');
+Route::get('/url/password/{id}', [UrlController::class, 'password'])->name('url.password');
+
+
+Route::post('/url/check/{check}', [UrlController::class, 'checkUrl'])->name('url.check');
+
+
+
+
 // Route::get('qr-code-g', function () {
 //     QrCode::size(500)
 //         ->format('png')

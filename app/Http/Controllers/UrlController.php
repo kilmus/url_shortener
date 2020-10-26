@@ -16,11 +16,7 @@ use Illuminate\Support\Str;
 class UrlController extends Controller
 {
 
-    public function main()
-    {
-        $urls = url::all();
-        return view('layouts/main', compact('urls', $urls));
-    }
+
 
     /**
      * Display a listing of the resource.
@@ -56,36 +52,93 @@ class UrlController extends Controller
         //$url_code = $this->generateShoutURL();
 
 
+        //dd($request);
 
-        //$stringImaageReFormat = base64_encode('_' . time());
-        //$ext = $request->file('url_qrcode')->getClientOriginalExtension();
-        //$imageName = $stringImaageReFormat . "." . $ext;
-        //$imageEncoded = File::get($request->url_qrcode);
+        if ($request->url_code == null) {
+            $input_code = Str::random(5);
+            //dd($input_code);
+        } else {
+            $input_code = $request->url_code;
+        }
 
         $url = new url();
-
-        //$qrcode = QrCode::generate("'.$url->url_old.'", storage_path('app/public/qrcodes/' . $url_code . '.png'));
-
         $url->url_old = $request->url_old;
+        $url->url_code = $input_code;
+        $url->url_password = $request->url_password;
+        //$url->url_count = $request->url_count + 1;
         //$url->url_code = FacadesURL::to('/') . '/' . Str::random(5);
-        $url->url_code = Str::random(5);
-        //$url->url_qrcode = $qrcode;
+
         $url->save();
         return view('url.view', compact('url', $url));
     }
 
-    public function fetchUrl($url)
-    {
-        //$short_url = FacadesURL::to('/') . '/' . $url;
-        //dd($url);
-        $query = DB::table('urls')->where('url_code', '=', $url);
+    // public function fetchUrl($url)
+    // {
+    //     //$short_url = FacadesURL::to('/') . '/' . $url;
+    //     //dd($url);
+    //     $query = DB::table('urls')->where('url_code', '=', $url);
 
-        if ($query->exists()) {
-            return redirect($query->value('url_old'));
+    //     //$query->url_count = $query->url_count + 1;
+    //     //dd($query->url_count);
+    //     $query->save();
+
+    //     if ($query->exists()) {
+    //         return redirect($query->value('url_old'));
+    //     } else {
+    //         return 'not exists';
+    //     }
+    // }
+
+    public function countUrl($url)
+    {
+        //$check = DB::table('urls')->where('url_password', '!=', null);
+        //dd($url);
+
+        // $urls = url::find($url);
+        //dd($url);
+        //$url2 = url::where('id', $url)->firstORFail();
+
+        $count = url::where('url_code', $url)->firstORFail();
+        $count->url_count = $count->url_count + 1;
+        $count->save();
+        return redirect($count->url_old);
+    }
+
+
+    public function password($url)
+    {
+
+        $urls = url::find($url);
+        //$url2 = url::where('id', $url)->firstORFail();
+        //dd($urls);
+        if ($urls->url_password != null) {
+            //dd($urls);
+            return view('url/password', compact('urls', $urls));
         } else {
-            return 'not exists';
+            $count = url::where('url_code', $urls->url_code)->firstORFail();
+            $count->url_count = $count->url_count + 1;
+            $count->save();
+            return redirect($count->url_old);
         }
     }
+
+
+    public function checkUrl(Request $request, $check)
+    {
+        //dd($check);
+        $checks = url::where('url_code', $check)->firstORFail();
+        //dd($checks->url_password);
+        if ($checks->url_password == $request->url_password) {
+
+            return redirect($checks->url_old);
+        } else {
+            //dd($checks->url_password, $request->url_password);
+            return redirect()->back()->with('error', 'รหัสผ่านไม่ถูกต้อง');
+        }
+    }
+
+
+
 
     // public function checkUrl(Request $request, $url)
     // {
