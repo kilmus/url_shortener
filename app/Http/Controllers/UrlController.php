@@ -110,10 +110,10 @@ class UrlController extends Controller
     }
 
 
-    public function password($url)
+    public function password($count)
     {
 
-        $urls = url::find($url);
+        $urls = url::find($count);
         //$url2 = url::where('id', $url)->firstORFail();
         //dd($urlss);
         if ($urls->url_password != null) {
@@ -151,30 +151,24 @@ class UrlController extends Controller
     //     }
     // }
 
-    public function shortUrl($url)
-    {
-        $url = url::find($url);
-        //dd($url);
-        return redirect($url->url_old);
-    }
+    // public function shortUrl($url)
+    // {
+    //     $url = url::find($url);
+    //     //dd($url);
+    //     return redirect($url->url_old);
+    // }
 
-    public function generateShoutURL()
-    {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $randomString = '';
+    // public function generateShoutURL()
+    // {
+    //     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    //     $randomString = '';
 
-        for ($i = 0; $i < 10; $i++) {
-            $index = substr(str_shuffle($characters), 0, 5);
-            $randomString = $index;
-        }
-
-
-
-        //$randomString = base_convert(rand(1000, 99999), 10, 36);
-
-        //dd($randomString);
-        return $randomString;
-    }
+    //     for ($i = 0; $i < 10; $i++) {
+    //         $index = substr(str_shuffle($characters), 0, 5);
+    //         $randomString = $index;
+    //     }
+    //     return $randomString;
+    // }
 
 
     public function location($url)

@@ -23,7 +23,7 @@
         </span>
     </div>
 
-    <a id="urlbox" href="{{route('url.url',$url)}}" target="_blank" name="url"> <span>{{url($url->url_code)}}</span> </a> 
+    {{-- <a id="urlbox" href="{{route('url.url',$url)}}" target="_blank" name="url"> <span>{{url($url->url_code)}}</span> </a>  --}}
     
    
     
