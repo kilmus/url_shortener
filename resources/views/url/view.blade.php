@@ -33,8 +33,8 @@
 
     
  <a href="{{route('url.index')}}" class="btn btn-primary" style="margin-top:15px;">กลับไปหน้าแรก</a>
- <a href="{{route('url.location',['url'=>$url->id])}}" class="btn btn-primary" style="margin-top:15px;">ไปหน้าดังกล่าว</a>
- <a href="{{route('url.password',['id'=>$url->id])}}" class="btn btn-primary" style="margin-top:15px;">ไปใส่รหัสผ่าน</a>
+ {{-- <a href="{{route('url.location',['url'=>$url->id])}}" class="btn btn-primary" style="margin-top:15px;">ไปหน้าดังกล่าว</a>
+ <a href="{{route('url.password',['id'=>$url->id])}}" class="btn btn-primary" style="margin-top:15px;">ไปใส่รหัสผ่าน</a> --}}
  </div>
 
 

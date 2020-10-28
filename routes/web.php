@@ -30,10 +30,10 @@ Route::get('/url/location/{url}', [UrlController::class, 'location'])->name('url
 
 
 
-Route::get('/{url}', [UrlController::class, 'countUrl'])->name('count');
+Route::get('{url}/', [UrlController::class, 'countUrl'])->where('url_code', '[a-zA-Z0-9]{5}')->middleware('checkpass')->name('count');
 
 
-Route::get('/url/password/{id}', [UrlController::class, 'password'])->name('url.password');
+Route::get('{url}/password/', [UrlController::class, 'password'])->where('url_code', '[a-zA-Z0-9]{5}')->name('url.password');
 
 
 Route::post('/url/check/{check}', [UrlController::class, 'checkUrl'])->name('url.check');

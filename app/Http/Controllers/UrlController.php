@@ -17,6 +17,11 @@ class UrlController extends Controller
 {
 
 
+    // public function __construct()
+    // {
+    //     $this->middleware('checkpass');
+    // }
+
 
     /**
      * Display a listing of the resource.
@@ -91,17 +96,17 @@ class UrlController extends Controller
 
     public function countUrl($url)
     {
-        //$check = DB::table('urls')->where('url_password', '!=', null);
-        //dd($url);
 
-        // $urls = url::find($url);
-        //dd($url);
-        //$url2 = url::where('id', $url)->firstORFail();
+
+        // $count = url::where('url_code', $url)->firstORFail();
+        // return view('url/password', [
+        //     'count' => $count
+        // ]);
 
         $count = url::where('url_code', $url)->firstORFail();
         $count->url_count = $count->url_count + 1;
         $count->save();
-        return redirect($count->url_old);
+        return redirect()->away($count->url_old);
     }
 
 
@@ -110,22 +115,17 @@ class UrlController extends Controller
 
         $urls = url::find($url);
         //$url2 = url::where('id', $url)->firstORFail();
-        //dd($urls);
+        //dd($urlss);
         if ($urls->url_password != null) {
             //dd($urls);
-            return view('url/password', compact('urls', $urls));
-        } else {
-            $count = url::where('url_code', $urls->url_code)->firstORFail();
-            $count->url_count = $count->url_count + 1;
-            $count->save();
-            return redirect($count->url_old);
+            return view('url.password', compact('urls', $urls));
         }
     }
 
 
     public function checkUrl(Request $request, $check)
     {
-        //dd($check);
+        dd($request->id);
         $checks = url::where('url_code', $check)->firstORFail();
         //dd($checks->url_password);
         if ($checks->url_password == $request->url_password) {

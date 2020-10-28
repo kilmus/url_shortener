@@ -17,8 +17,15 @@ class Checkpass
      */
     public function handle(Request $request, Closure $next)
     {
-        $pass = url::where('url_code', $request)->firstORFail();
-        dd($pass);
+        //dd($request->url);
+        $count = url::where('url_code', $request->url)->firstORFail();
+        if ($count->url_password != null) {
+            //dd($count->url_password);
+            //dd($count);
+            return redirect()->route('url.password', [
+                'count' => $count,
+            ]);
+        }
         return $next($request);
     }
 }
