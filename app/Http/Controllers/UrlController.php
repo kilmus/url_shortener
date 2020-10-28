@@ -116,16 +116,19 @@ class UrlController extends Controller
         $urls = url::find($count);
         //$url2 = url::where('id', $url)->firstORFail();
         //dd($urlss);
-        if ($urls->url_password != null) {
-            //dd($urls);
-            return view('url.password', compact('urls', $urls));
-        }
+        // if ($urls->url_password != null) {
+        //     dd($urls);
+        //     return view('url.password', compact('urls', $urls));
+        // }
+        return view('url.password', [
+            'urls' => $urls,
+        ]);
     }
 
 
     public function checkUrl(Request $request, $check)
     {
-        dd($request->id);
+        dd($request->url_password);
         $checks = url::where('url_code', $check)->firstORFail();
         //dd($checks->url_password);
         if ($checks->url_password == $request->url_password) {

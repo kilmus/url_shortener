@@ -3,7 +3,7 @@
 
 
 
-<form action="{{route('url.check',['check'=>$count->url_code])}}" method="post" enctype="multipart/form-data">
+<form action="{{route('url.check',['check'=>$urls->url_code])}}" method="post" enctype="multipart/form-data">
     {{ csrf_field() }}
     <div class="form-group" align="center">
         
