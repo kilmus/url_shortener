@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Models\url;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class Checkpass
 {
@@ -22,8 +23,8 @@ class Checkpass
         if ($count->url_password != null) {
             //dd($count->url_password);
             //dd($count);
-            return redirect()->route('url.password', [
-                'count' => $count,
+            return view('url.password', [
+                'url' => $request->url,
             ]);
         }
         return $next($request);

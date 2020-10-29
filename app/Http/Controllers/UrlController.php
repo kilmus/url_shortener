@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\url;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
@@ -96,24 +97,44 @@ class UrlController extends Controller
 
     public function countUrl($url)
     {
-
-
-        // $count = url::where('url_code', $url)->firstORFail();
-        // return view('url/password', [
-        //     'count' => $count
-        // ]);
-
         $count = url::where('url_code', $url)->firstORFail();
         $count->url_count = $count->url_count + 1;
         $count->save();
-        return redirect()->away($count->url_old);
+        if ($count->url_password != null) {
+            //dd($count->url_password);
+            //dd($count);
+            return view('url.password', [
+                'url' => $count,
+            ]);
+        } else {
+            return redirect()->away($count->url_old);
+        }
+    }
+
+    public function checkUrl(Request $request, $check)
+    {
+        //dd($request->url_password);
+        $checks = url::where('url_code', $check)->firstORFail();
+        //dd($checks->url_password);
+        if ($checks->url_password == $request->url_password) {
+            $checks->url_count = $checks->url_count + 1;
+            $checks->save();
+            return redirect($checks->url_old);
+        } else {
+            //dd($checks->url_password, $request->url_password);
+            return redirect()->back()->with('error', 'รหัสผ่านไม่ถูกต้อง');
+        }
     }
 
 
-    public function password($count)
+    public function password($url)
     {
+        //dd($count);
+        $count = url::where('url_code', $url)->firstORFail();
+        //$id = Crypt::decrypt($count);
 
-        $urls = url::find($count);
+        //dd($id->id);
+        $urls = url::find($count->id);
         //$url2 = url::where('id', $url)->firstORFail();
         //dd($urlss);
         // if ($urls->url_password != null) {
@@ -126,19 +147,7 @@ class UrlController extends Controller
     }
 
 
-    public function checkUrl(Request $request, $check)
-    {
-        dd($request->url_password);
-        $checks = url::where('url_code', $check)->firstORFail();
-        //dd($checks->url_password);
-        if ($checks->url_password == $request->url_password) {
 
-            return redirect($checks->url_old);
-        } else {
-            //dd($checks->url_password, $request->url_password);
-            return redirect()->back()->with('error', 'รหัสผ่านไม่ถูกต้อง');
-        }
-    }
 
 
 
