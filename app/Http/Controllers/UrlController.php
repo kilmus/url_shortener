@@ -31,8 +31,8 @@ class UrlController extends Controller
      */
     public function index()
     {
-        $urls = url::all();
-        return view('url/index', compact('urls', $urls));
+
+        return view('url/index');
     }
 
     /**
@@ -53,27 +53,31 @@ class UrlController extends Controller
      */
     public function store(Request $request)
     {
-        //$url = url::whereUrl($request->url_old);
 
-        //$url_code = $this->generateShoutURL();
-
-
-        //dd($request);
-
+        $urlss = DB::table('urls')->select('*')->where('url_code', $request->url_code)->get();
         if ($request->url_code == null) {
             $input_code = Str::random(5);
-            //dd($input_code);
         } else {
             $input_code = $request->url_code;
         }
+
+        // dd($urlloop->url_code);
 
         $url = new url();
         $url->url_old = $request->url_old;
         $url->url_code = $input_code;
         $url->url_password = $request->url_password;
-        //$url->url_count = $request->url_count + 1;
-        //$url->url_code = FacadesURL::to('/') . '/' . Str::random(5);
 
+        foreach ($urlss as $urlloop) {
+            //$urlloop->url_code;
+            //dd($urlloop->url_code);
+            if ($input_code == $urlloop->url_code) {
+                //dd($urlloop->url_code);
+                session()->flash('error', "ลิงค์ที่คุณกำหนดมาซ้ำกับที่มีในระบบ กรุณาระบุใหม่!! ");
+                return redirect('url/index');
+            }
+        }
+        Session()->flash("success", "ทำการย่อลิ้งค์เสร็จสิ้น!! ");
         $url->save();
         return view('url.view', compact('url', $url));
     }
@@ -98,8 +102,7 @@ class UrlController extends Controller
     public function countUrl($url)
     {
         $count = url::where('url_code', $url)->firstORFail();
-        $count->url_count = $count->url_count + 1;
-        $count->save();
+
         if ($count->url_password != null) {
             //dd($count->url_password);
             //dd($count);
@@ -107,6 +110,8 @@ class UrlController extends Controller
                 'url' => $count,
             ]);
         } else {
+            $count->url_count = $count->url_count + 1;
+            $count->save();
             return redirect()->away($count->url_old);
         }
     }
@@ -122,6 +127,7 @@ class UrlController extends Controller
             return redirect($checks->url_old);
         } else {
             //dd($checks->url_password, $request->url_password);
+            session()->flash('error', "ลิงค์ที่คุณกำหนดมาซ้ำกับที่มีในระบบ กรุณาระบุใหม่!! ");
             return redirect()->back()->with('error', 'รหัสผ่านไม่ถูกต้อง');
         }
     }

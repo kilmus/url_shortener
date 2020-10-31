@@ -13,8 +13,15 @@
 </head>
 <body>
     <div class="container">
-		<h1 align="center">Url Shortener</h1>
 		
+		<a href="{{route('url.index')}}"><h1 align="center">Url Shortener</h1></a>
+		
+		@if(Session()->has('error'))
+		<div class="alert alert-danger" role="alert">
+			{{Session()->get('error')}}
+		</div>
+		@endif
+
         @yield('body')
     </div>
 

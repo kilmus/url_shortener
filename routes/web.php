@@ -25,7 +25,7 @@ Route::post('/url/store', [UrlController::class, 'store'])->name('url.store');
 Route::get('/url/view/{url}', [UrlController::class, 'view'])->name('url.view');
 //Route::get('/url/{url}', [UrlController::class, 'shortUrl'])->name('url.url');
 //Route::get('/{url}', [UrlController::class, 'fetchUrl'])->name('url');
-Route::get('/url/location/{url}', [UrlController::class, 'location'])->name('url.location');
+
 
 
 

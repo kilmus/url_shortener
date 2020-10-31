@@ -1,5 +1,7 @@
 @extends('layouts.main')
 @section('body')
+
+
 @if ($errors->any())
 <div class="alert alert-danger">
     <ul>
@@ -10,9 +12,6 @@
 </div>
 @endif
 
-
-
- 
 
  <div class="container">
     <div class="input-group">
